@@ -1,0 +1,58 @@
+name: ps_local_car
+
+services:
+  # The App
+  awe-local-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: awe-local-app
+    stdin_open: true
+    tty: true
+    ports:
+      - ${WEB_APP_PORT}:8080
+    volumes:
+      - ./:/var/www/html
+    environment:
+      RUN_LARAVEL_AUTOMATIONS: "false"
+      AUTORUN_ENABLED: "false"
+      AUTORUN_LARAVEL_STORAGE_LINK: "false"
+      SSL_MODE: "off"
+    networks:
+      - mysql_net
+
+  # MySQL
+  awe-local-db:
+    image: mysql:latest
+    container_name: awe-local-db
+    restart: unless-stopped
+    ports:
+      - ${DB_LOCAL_PORT}:3306
+    volumes:
+      - awe-local-db-volume:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      ON_CREATE_DB: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - mysql_net
+
+  # MailHog Server
+  awe-local-mailhog:
+    image: mailhog/mailhog:latest
+    container_name: awe-local-mailhog
+    restart: unless-stopped
+    ports:
+      - 10001:1025
+      - 10002:8025
+    networks:
+      - mysql_net
+
+networks:
+  mysql_net:
+    driver: bridge
+
+volumes:
+  awe-local-db-volume:

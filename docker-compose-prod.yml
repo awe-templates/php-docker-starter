@@ -1,0 +1,53 @@
+name: ps-prod-car
+
+services:
+  # Laravel Starter App
+  awe-prod-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: awe-prod-app
+    stdin_open: true
+    tty: true
+    ports:
+      - ${WEB_APP_PORT}:8080
+      - ${WEB_APP_PORT2}:8443
+    volumes:
+      - ./:/var/www/html
+    environment:
+      RUN_LARAVEL_AUTOMATIONS: "true"
+      AUTORUN_ENABLED: "true"
+      AUTORUN_LARAVEL_STORAGE_LINK: "true"
+      SSL_MODE: "mixed"
+      PHP_POOL_NAME: "app_pool"
+      PHP_OPCACHE_ENABLE: "1"
+    networks:
+      - web_net
+      - mysql_net
+
+  # MySQL
+  awe-prod-db:
+    image: mysql:latest
+    container_name: awe-prod-db
+    restart: unless-stopped
+    ports:
+      - ${DB_LOCAL_PORT}:3306
+    volumes:
+      - awe-prod-db-volume:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      ON_CREATE_DB: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - mysql_net
+networks:
+  web_net:
+    external: false
+
+  mysql_net:
+    driver: bridge
+
+volumes:
+  awe-prod-db-volume:
