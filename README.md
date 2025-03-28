@@ -6,7 +6,7 @@ PHP Docker starter with serversideup/php images for [Laravel](https://laravel.co
 
 ### 1. Add the following variables to your `.env` file
 
-Check [.env.example](./.env.example) file.
+Copy [.env.example](./.env.example) file and rename as `.env`.
 
 ### 2. Run the following command
 
