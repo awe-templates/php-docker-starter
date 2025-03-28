@@ -1,6 +1,9 @@
 # php-docker-starter
 
-PHP Docker starter with serversideup/php images for PHP and [Laravel](https://laravel.com/) apps.
+PHP Docker starter template with serversideup/php images for PHP apps (*Laravel compatiable*).
+
+> [!NOTE]  
+> This setup may not work with your PHP apps directly. According to your app, you may need to configure with entrypoint. For example in Laravel apps, you need to consider `public` folder as document root. It dependds on your app/framework configurqation, you may need to change the `Dockerfile` or `docker-compose.yml` file.
 
 ## Usage
 
