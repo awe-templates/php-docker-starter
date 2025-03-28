@@ -1,6 +1,6 @@
 # php-docker-starter
 
-PHP Docker starter with serversideup/php images for [Laravel](https://laravel.com/) apps.
+PHP Docker starter with serversideup/php images for PHP and [Laravel](https://laravel.com/) apps.
 
 ## Usage
 
